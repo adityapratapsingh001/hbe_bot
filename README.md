@@ -20,7 +20,7 @@ Before starting, run your answer API service. The main script currently expects 
 http://localhost:3102/v1/generate
 ```
 
-The API server is a separate service; this project does not contain its startup code.
+The API server is a separate Node.js module from [adityapratapsingh001/service](https://github.com/adityapratapsingh001/service). Clone and run it on the same computer as this Python script using the steps below. The HYE Bot repository does not include the service's source files.
 
 If activating the environment is blocked, run Python directly:
 
@@ -29,9 +29,52 @@ cd D:\hye-bot
 .\venv\Scripts\python.exe -u open_test_fixed.py
 ```
 
+## Install and start the local API module
+
+1. Install Git and Node.js (including npm) if they are not already available.
+2. Open **Command Prompt (CMD)** and clone the service repository. For example, these commands place it beside `D:\hye-bot`:
+
+```cmd
+cd /d D:\
+git clone https://github.com/adityapratapsingh001/service.git
+cd service
+```
+
+If you already cloned the service, open CMD in its existing folder instead. You can open that folder in File Explorer, type `cmd` in the address bar, and press ENTER.
+
+3. Install the service's dependencies from the folder containing `package.json`:
+
+```cmd
+npm i
+```
+
+4. Start the API using the included Windows launcher:
+
+```cmd
+api.bat
+```
+
+The launcher runs `app.js`. You can also start it directly from the service folder:
+
+```cmd
+node app.js
+```
+
+If the service needs a browser login session, stop the API first, run `node login.js` from the service folder, and complete sign-in in the window it opens. Wait for that helper to finish, then start `api.bat` again. This service login is separate from your Hitbullseye login.
+
+Keep this CMD window open while using the bot. The API needs to listen on port `3102` and accept requests at:
+
+```text
+http://localhost:3102/v1/generate
+```
+
+After the API starts successfully, open a **separate** terminal in the HYE Bot folder and run `python -u open_test_fixed.py` using the virtual environment. Starting the Python script does not start the API automatically. Restart the API file whenever its server has been stopped; dependency installation is normally needed only on first setup or when dependencies change.
+
+`localhost` refers to your own computer. Other users must install and run the API module on their own computer as well.
+
 ## First-time setup
 
-You need Windows, PowerShell, Python, an internet connection for Hitbullseye, and access to a compatible answer API. The existing environment was created with Python 3.13.
+You need Windows, PowerShell, Python, Node.js/npm for the separate API module, an internet connection for Hitbullseye, and a running compatible answer API. The existing Python environment was created with Python 3.13.
 
 For a fresh checkout without a working virtual environment:
 
@@ -176,7 +219,7 @@ Each retry creates a separate prompt file. If the request fails before an HTTP r
 | --- | --- |
 | Initial page navigation times out | The browser remains open. Refresh or open the test URL manually, log in, then continue at the terminal prompt. |
 | No login form found | Open the login form in the launched browser and retry. Use `skip` if already logged in. |
-| Connection refused on port 3102 | Start your local answer API service, or set `GPT_URL` to the correct endpoint. |
+| Connection refused on port 3102 | Clone the [service repository](https://github.com/adityapratapsingh001/service) if needed, open its folder in CMD, run `npm i`, then `api.bat` (or `node app.js`). Keep that window open and confirm the service uses port 3102, or set `GPT_URL` to the correct endpoint. |
 | API asks you to send the question again | Inspect the matching prompt and response files. The full question should be in the prompt; confirm the API accepts the documented JSON format. |
 | Section or palette count error | Wait for the page to load, then retry. Inspect the printed debug HTML path if it repeats; the website markup may have changed. |
 | Multiple test pages detected | Close duplicate test tabs in the launched browser, leaving the intended test open. |
