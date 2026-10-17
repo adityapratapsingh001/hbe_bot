@@ -1,0 +1,22 @@
+# Local account details
+login_credentials.json
+.env
+.env.*
+!.env.example
+
+# Captured prompts, responses, and page HTML
+prompts/
+debug/
+
+# Local Python environment and generated files
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Editor and OS files
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
